@@ -1,82 +1,55 @@
-# Placely.ai 🚀
+# AI Interview Coach & Placement Tracker
 
-Placely.ai is a professional, AI-powered platform designed to help students and developers master the recruitment process. From analyzing resumes with industry-standard ATS logic to simulating real-world technical interviews, Placely.ai is your ultimate placement companion.
+This is a platform to help developers prepare for placements. It uses AI to run mock interviews, analyze resumes for ATS compatibility, and generate custom study plans.
 
-## ✨ Features
+## Features
 
-### 🤖 AI Interview Coach
-- **Conversational AI**: Engage in a real-time, 5-round interview simulation.
-- **Dynamic Difficulty**: The AI adjusts questions based on your performance.
-- **Structured Feedback**: Receive per-answer ratings, feedback, and improvement tips.
-- **Comprehensive Report**: Get a final performance summary and a readiness score.
+- AI Interview Coach: A conversational bot that asks technical and behavioral questions, giving feedback and a rating for each answer.
+- Resume Analyzer: Checks your resume and gives an ATS score along with specific strengths, weaknesses, and missing keywords.
+- Smart Study Roadmap: Creates 1-month or 3-month study plans based on your goals and tracks your progress.
+- Progress Tracking: Basic dashboard to see your stats and roadmap completion.
 
-### 📄 ATS Resume Analyzer
-- **Expert Evaluation**: Analyze your resume against senior recruiter standards.
-- **ATS Scoring**: Get an instant score from 0 to 100.
-- **Keyword Optimization**: Identify missing industry keywords crucial for passing automated filters.
-- **Actionable Tips**: Detailed lists of strengths, weaknesses, and specific suggestions for improvement.
+## Tech Stack
 
-### 🗺️ Smart Roadmap Generator
-- **Personalized Planning**: Generate custom study roadmaps based on your career goals and timeline.
-- **Task Tracking**: Interactive daily tasks with progress monitoring.
-- **Milestone Management**: Stay organized with structured learning phases.
+- Frontend: React (Vite), Tailwind CSS, Axios, Context API
+- Backend: Node.js, Express.js
+- Database: MongoDB
+- Validation & AI: Zod, Groq API
 
-### 📊 DSA Tracker
-- **Progress Monitoring**: Track your Data Structures and Algorithms practice.
-- **Problem Sorting**: Organize problems by difficulty and topic.
-- **Visual Analytics**: Monitor your solving consistency and skill growth.
+## Setup Instructions
 
-## 🛠️ Tech Stack
+### Backend
+1. Go to the backend folder: `cd backend`
+2. Install dependencies: `npm install`
+3. Create a .env file (see example below)
+4. Start the server: `npm run dev`
 
-- **Frontend**: React.js, Tailwind CSS, Lucide React, Framer Motion
-- **Backend**: Node.js, Express.js, MongoDB (Mongoose)
-- **AI Engine**: Groq API (Llama 3.3 70B & Llama 3.1 8B)
-- **Real-time**: Socket.io
-- **Security**: JWT Authentication, Bcrypt Password Hashing
-- **Deployment**: Docker Support (Dockerfile & Docker Compose)
+### Frontend
+1. Go to the frontend folder: `cd frontend`
+2. Install dependencies: `npm install`
+3. Start the dev server: `npm run dev`
 
-## 🚀 Getting Started
+## Environment Variables
 
-### Prerequisites
-- Node.js (v18+)
-- MongoDB Atlas account or local MongoDB instance
-- Groq API Key
+Create a .env file in the backend directory with these keys:
 
-### Installation
+```
+PORT=5000
+MONGODB_URI=your_mongodb_url
+JWT_SECRET=any_random_string
+GROQ_API_KEY=your_groq_key
+FRONTEND_URL=http://localhost:5173
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/mdrehan18/placely.ai.git
-   cd placely.ai
-   ```
+## Notes
 
-2. **Backend Setup**
-   ```bash
-   cd backend
-   npm install
-   ```
-   Create a `.env` file in the `backend` directory:
-   ```env
-   PORT=5000
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   GROQ_API_KEY=your_groq_api_key
-   FRONTEND_URL=http://localhost:5173
-   ```
-   Start the backend:
-   ```bash
-   npm run dev
-   ```
+- Make sure MongoDB is running before starting the backend.
+- You need a Groq API key for the resume analyzer and interview coach to work.
+- The default port for the backend is 5000 and frontend is 5173.
 
-3. **Frontend Setup**
-   ```bash
-   cd ../frontend
-   npm install
-   npm run dev
-   ```
+## Future Improvements
 
-4. **Access the App**
-   Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-## 📄 License
-This project is licensed under the MIT License.
+- Add voice support for the interview coach.
+- Support for more file formats in the resume analyzer.
+- PDF export for the study roadmaps.
+- More detailed analytics for the DSA tracker.
