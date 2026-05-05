@@ -1,0 +1,31 @@
+node_modules/
+**/node_modules/
+.env
+**/.env
+.env.*
+**/.env.*
+dist/
+build/
+coverage/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# OS files
+*.swp
+
+# Uploads (if storing locally)
+uploads/
+tmp/
+
+# Optional (if used)
+.next/
+out/
