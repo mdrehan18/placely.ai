@@ -35,11 +35,13 @@ Create a .env file in the backend directory with these keys:
 
 ```
 PORT=5000
-MONGODB_URI=your_mongodb_url
+MONGO_URI=your_mongodb_url
 JWT_SECRET=any_random_string
 GROQ_API_KEY=your_groq_key
-FRONTEND_URL=http://localhost:5173
+CLIENT_URL=https://your-frontend-url.vercel.app
 ```
+
+Note: `MONGODB_URI` and `FRONTEND_URL` are also supported for backward compatibility.
 
 ## Notes
 
