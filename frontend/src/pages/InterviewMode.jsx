@@ -16,7 +16,7 @@ const InterviewMode = () => {
 
   useEffect(() => {
     // Connect to Socket.io server
-    const newSocket = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000', {
+    const newSocket = io(import.meta.env.VITE_API_URL, {
       withCredentials: true,
     });
 
