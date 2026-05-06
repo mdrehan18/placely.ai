@@ -53,11 +53,11 @@ const ResumeAnalyzer = () => {
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Upload Section */}
         <div className="lg:col-span-5">
-          <div className="glass-card rounded-[2.5rem] p-10 flex flex-col items-center justify-center min-h-[450px] relative overflow-hidden group transition-all duration-500 hover:border-primary/30">
+          <div className="glass-card rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 flex flex-col items-center justify-center min-h-[350px] sm:min-h-[450px] relative overflow-hidden group transition-all duration-500 hover:border-primary/30">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
 
-            <div className="w-24 h-24 bg-primary/10 text-primary rounded-[2rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-700 shadow-glow relative z-10">
-              <Upload size={40} className="group-hover:-translate-y-1 transition-transform duration-500" />
+            <div className="w-16 h-16 sm:w-24 sm:h-24 bg-primary/10 text-primary rounded-2xl sm:rounded-[2rem] flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-700 shadow-glow relative z-10">
+              <Upload size={32} className="sm:w-[40px] sm:h-[40px] group-hover:-translate-y-1 transition-transform duration-500" />
             </div>
 
             <h2 className="text-2xl font-bold font-heading mb-3 relative z-10">Select PDF Resume</h2>
@@ -116,31 +116,37 @@ const ResumeAnalyzer = () => {
               </div>
             ) : analysis ? (
               <div className="space-y-10 animate-slide-up h-full">
-                <div className="flex flex-col sm:flex-row items-center gap-8 pb-10 border-b border-border/30">
+                <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 pb-8 sm:pb-10 border-b border-border/30">
                   <div className="relative">
-                    <svg className="w-32 h-32 transform -rotate-90">
-                      <circle className="text-secondary/40" strokeWidth="10" stroke="currentColor" fill="transparent" r="54" cx="64" cy="64" />
+                    <svg className="w-24 h-24 sm:w-32 sm:h-32 transform -rotate-90">
+                      <circle className="text-secondary/40" strokeWidth="8" sm:strokeWidth="10" stroke="currentColor" fill="transparent" r="44" sm:r="54" cx="48" sm:cx="64" cy="48" sm:cy="64" />
                       <circle
                         className={`${analysis.ats_score > 75 ? 'text-success' : 'text-warning'}`}
-                        strokeWidth="10"
-                        strokeDasharray="339.3"
-                        strokeDashoffset={339.3 - (339.3 * analysis.ats_score) / 100}
+                        strokeWidth="8"
+                        sm:strokeWidth="10"
+                        strokeDasharray="276.46"
+                        sm:strokeDasharray="339.3"
+                        strokeDashoffset={276.46 - (276.46 * analysis.ats_score) / 100}
+                        sm:strokeDashoffset={339.3 - (339.3 * analysis.ats_score) / 100}
                         strokeLinecap="round"
                         stroke="currentColor"
                         fill="transparent"
-                        r="54"
-                        cx="64"
-                        cy="64"
+                        r="44"
+                        sm:r="54"
+                        cx="48"
+                        sm:cx="64"
+                        cy="48"
+                        sm:cy="64"
                         style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center flex-col">
-                      <span className="text-4xl font-extrabold font-heading tracking-tighter">{analysis.ats_score}</span>
+                      <span className="text-2xl sm:text-4xl font-extrabold font-heading tracking-tighter">{analysis.ats_score}</span>
                     </div>
                   </div>
                   <div className="text-center sm:text-left">
-                    <h3 className="text-3xl font-extrabold font-heading mb-2 tracking-tight">ATS Compatibility</h3>
-                    <p className="text-muted-foreground font-medium opacity-80 leading-relaxed max-w-sm">
+                    <h3 className="text-2xl sm:text-3xl font-extrabold font-heading mb-2 tracking-tight">ATS Compatibility</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-80 leading-relaxed max-w-sm">
                       Your resume has a <span className="text-foreground font-bold">{analysis.ats_score}%</span> match with modern hiring filters.
                     </p>
                   </div>

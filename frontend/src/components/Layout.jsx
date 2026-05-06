@@ -148,7 +148,7 @@ const Layout = () => {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto custom-scrollbar px-6 py-8 sm:px-10 sm:py-10 relative">
+        <div className="flex-1 overflow-auto custom-scrollbar px-4 py-6 sm:px-10 sm:py-10 relative">
           <div className="max-w-7xl mx-auto h-full animate-slide-up">
             <Outlet />
           </div>

@@ -20,23 +20,23 @@ const Dashboard = () => {
   ];
 
   const StatCard = ({ title, value, subtitle, icon: Icon, trend, color }) => (
-    <div className="relative overflow-hidden rounded-[2rem] border border-border/50 bg-card p-7 shadow-soft hover:shadow-glow transition-all duration-500 group">
+    <div className="relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-border/50 bg-card p-5 sm:p-7 shadow-soft hover:shadow-glow transition-all duration-500 group">
       <div className={`absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500 bg-${color}`} />
       <div className="relative z-10 flex flex-col h-full justify-between">
-        <div className="flex items-center justify-between mb-5">
-          <div className={`p-3 rounded-2xl bg-${color}/10 text-${color} shadow-sm group-hover:scale-110 transition-transform duration-500`}>
-            <Icon size={22} />
+        <div className="flex items-center justify-between mb-4 sm:mb-5">
+          <div className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-${color}/10 text-${color} shadow-sm group-hover:scale-110 transition-transform duration-500`}>
+            <Icon size={20} className="sm:w-[22px] sm:h-[22px]" />
           </div>
           {trend && (
-            <span className={`text-[10px] font-bold px-2 py-1 rounded-full bg-success/10 text-success uppercase tracking-wider`}>
+            <span className={`text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-full bg-success/10 text-success uppercase tracking-wider`}>
               +{trend}%
             </span>
           )}
         </div>
         <div>
-          <div className="text-sm font-bold text-muted-foreground/70 uppercase tracking-widest mb-1">{title}</div>
-          <div className="text-4xl font-extrabold text-foreground font-heading tracking-tight">{value}</div>
-          <p className="text-xs text-muted-foreground mt-2 font-medium opacity-60">{subtitle}</p>
+          <div className="text-[10px] sm:text-sm font-bold text-muted-foreground/70 uppercase tracking-widest mb-1">{title}</div>
+          <div className="text-2xl sm:text-4xl font-extrabold text-foreground font-heading tracking-tight">{value}</div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 sm:mt-2 font-medium opacity-60">{subtitle}</p>
         </div>
       </div>
     </div>
@@ -45,26 +45,26 @@ const Dashboard = () => {
   return (
     <div className="space-y-10 pb-10">
       {/* Welcome Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 p-8 rounded-[2.5rem] border border-primary/10 relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2.5rem] border border-primary/10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold mb-4 uppercase tracking-widest">
             <Star size={12} className="fill-current" /> Personal Growth
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground font-heading mb-3">
+          <h1 className="text-2xl sm:text-5xl font-extrabold tracking-tight text-foreground font-heading mb-3 leading-tight">
             Hello, {user?.name?.split(' ')[0] || 'Developer'}!
           </h1>
-          <p className="text-muted-foreground text-lg max-w-xl leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-lg max-w-xl leading-relaxed">
             You've solved <span className="text-foreground font-bold">12 problems</span> this week. You're in the top <span className="text-primary font-bold">5%</span> of active users.
           </p>
         </div>
         <div className="flex flex-wrap gap-3 relative z-10">
           <button 
             onClick={() => navigate('/roadmap')}
-            className="flex items-center gap-2 px-6 py-4 bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 transition-all shadow-glow font-bold group"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 bg-primary text-primary-foreground rounded-xl sm:rounded-2xl hover:bg-primary/90 transition-all shadow-glow font-bold group"
           >
-            <Sparkles size={20} /> <span>New Roadmap</span>
-            <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            <Sparkles size={18} className="sm:w-[20px] sm:h-[20px]" /> <span>New Roadmap</span>
+            <ChevronRight size={16} className="sm:w-[18px] sm:h-[18px] group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
@@ -105,18 +105,18 @@ const Dashboard = () => {
 
       <div className="grid gap-8 lg:grid-cols-12">
         {/* Chart Section */}
-        <div className="lg:col-span-8 rounded-[2.5rem] border border-border/50 bg-card shadow-soft p-8 flex flex-col group">
-          <div className="flex items-center justify-between mb-10">
+        <div className="lg:col-span-8 rounded-[1.5rem] sm:rounded-[2.5rem] border border-border/50 bg-card shadow-soft p-5 sm:p-8 flex flex-col group">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-10 gap-4">
             <div>
-              <h3 className="font-bold text-2xl font-heading tracking-tight">Performance Velocity</h3>
-              <p className="text-sm text-muted-foreground font-medium opacity-70">Daily problem solving activity</p>
+              <h3 className="font-bold text-xl sm:text-2xl font-heading tracking-tight">Performance Velocity</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-70">Daily problem solving activity</p>
             </div>
-            <select className="bg-secondary/50 border-none rounded-xl px-4 py-2 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer">
+            <select className="w-full sm:w-auto bg-secondary/50 border-none rounded-xl px-4 py-2 text-xs sm:text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer">
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
             </select>
           </div>
-          <div className="flex-1 min-h-[350px]">
+          <div className="flex-1 min-h-[250px] sm:min-h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={activityData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
                 <defs>
@@ -167,12 +167,12 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <div className="lg:col-span-4 rounded-[2.5rem] border border-border/50 bg-card shadow-soft p-8 flex flex-col">
-          <div className="mb-8">
-            <h3 className="font-bold text-2xl font-heading tracking-tight flex items-center gap-3">
-              <TrendingUp size={24} className="text-primary" /> Activity
+        <div className="lg:col-span-4 rounded-[1.5rem] sm:rounded-[2.5rem] border border-border/50 bg-card shadow-soft p-6 sm:p-8 flex flex-col">
+          <div className="mb-6 sm:mb-8">
+            <h3 className="font-bold text-xl sm:text-2xl font-heading tracking-tight flex items-center gap-3">
+              <TrendingUp size={20} className="text-primary sm:w-[24px] sm:h-[24px]" /> Activity
             </h3>
-            <p className="text-sm text-muted-foreground font-medium opacity-70">Your latest achievements.</p>
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-70">Your latest achievements.</p>
           </div>
           
           <div className="space-y-4 flex-1">

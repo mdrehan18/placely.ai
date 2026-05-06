@@ -132,12 +132,12 @@ const Roadmap = () => {
           <button
             type="submit"
             disabled={isGenerating || !goal}
-            className="px-10 py-4 bg-primary text-primary-foreground font-black rounded-2xl hover:bg-primary/90 disabled:opacity-50 transition-all shadow-glow hover:scale-[1.02] active:scale-95 whitespace-nowrap"
+            className="w-full lg:w-auto px-10 py-4 bg-primary text-primary-foreground font-black rounded-2xl hover:bg-primary/90 disabled:opacity-50 transition-all shadow-glow hover:scale-[1.02] active:scale-95 whitespace-nowrap"
           >
             {isGenerating ? (
-              <div className="flex items-center gap-2"><Loader2 size={20} className="animate-spin" /> Architecting...</div>
+              <div className="flex items-center justify-center gap-2"><Loader2 size={20} className="animate-spin" /> Architecting...</div>
             ) : (
-              <div className="flex items-center gap-2">Generate <Sparkles size={18} /></div>
+              <div className="flex items-center justify-center gap-2">Generate <Sparkles size={18} /></div>
             )}
           </button>
         </form>
@@ -145,15 +145,15 @@ const Roadmap = () => {
 
       {currentRoadmap && (
         <div className="mt-16 max-w-5xl animate-slide-up">
-          <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8 glass-card p-10 rounded-[2.5rem] shadow-soft border-primary/10">
+          <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8 glass-card p-6 sm:p-10 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-soft border-primary/10">
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                   <TrendingUp size={20} />
                 </div>
-                <h2 className="text-3xl font-black font-heading tracking-tight text-foreground">{currentRoadmap.goal}</h2>
+                <h2 className="text-2xl sm:text-3xl font-black font-heading tracking-tight text-foreground">{currentRoadmap.goal}</h2>
               </div>
-              <p className="text-muted-foreground font-bold text-sm flex items-center gap-2 px-1">
+              <p className="text-muted-foreground font-bold text-[10px] sm:text-sm flex items-center gap-2 px-1">
                 <Calendar size={14} className="text-primary" /> TIME HORIZON: <span className="text-foreground">{currentRoadmap.duration.toUpperCase()}</span>
               </p>
             </div>

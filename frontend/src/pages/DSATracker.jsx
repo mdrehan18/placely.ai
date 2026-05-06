@@ -74,13 +74,13 @@ const DSATracker = () => {
             <Code2 size={12} /> Progress Hub
           </div>
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground font-heading">DSA Tracker</h1>
-          <p className="text-muted-foreground text-lg max-w-xl mt-2 leading-relaxed font-medium opacity-80">
+          <p className="text-muted-foreground text-sm sm:text-lg max-w-xl mt-2 leading-relaxed font-medium opacity-80">
             Keep track of your problem-solving journey and ace your coding rounds.
           </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-glow hover:scale-[1.02] active:scale-95"
+          className="w-full md:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-glow hover:scale-[1.02] active:scale-95"
         >
           <Plus size={20} /> Add Problem
         </button>
@@ -131,16 +131,16 @@ const DSATracker = () => {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-border/30">
-                  <th className="py-6 px-8 font-black text-muted-foreground text-[10px] tracking-[0.2em] uppercase">Status</th>
-                  <th className="py-6 px-8 font-black text-muted-foreground text-[10px] tracking-[0.2em] uppercase">Problem Details</th>
-                  <th className="py-6 px-8 font-black text-muted-foreground text-[10px] tracking-[0.2em] uppercase">Difficulty</th>
-                  <th className="py-6 px-8 font-black text-muted-foreground text-[10px] tracking-[0.2em] uppercase text-right">Actions</th>
+                  <th className="py-5 sm:py-6 px-4 sm:px-8 font-black text-muted-foreground text-[9px] sm:text-[10px] tracking-[0.2em] uppercase">Status</th>
+                  <th className="py-5 sm:py-6 px-4 sm:px-8 font-black text-muted-foreground text-[9px] sm:text-[10px] tracking-[0.2em] uppercase min-w-[200px]">Problem Details</th>
+                  <th className="py-5 sm:py-6 px-4 sm:px-8 font-black text-muted-foreground text-[9px] sm:text-[10px] tracking-[0.2em] uppercase">Difficulty</th>
+                  <th className="py-5 sm:py-6 px-4 sm:px-8 font-black text-muted-foreground text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/30">
                 {filteredProblems.map((problem) => (
                   <tr key={problem._id} className="hover:bg-primary/[0.02] transition-colors group">
-                    <td className="py-6 px-8 w-24">
+                    <td className="py-5 sm:py-6 px-4 sm:px-8 w-16 sm:w-24">
                       <button
                         onClick={() => handleStatusChange(problem._id, problem.status)}
                         className="transition-transform active:scale-90"
@@ -156,9 +156,9 @@ const DSATracker = () => {
                         )}
                       </button>
                     </td>
-                    <td className="py-6 px-8">
+                    <td className="py-5 sm:py-6 px-4 sm:px-8">
                       <div className="flex flex-col">
-                        <span className={`text-base font-bold transition-all ${problem.status === 'Solved' ? 'text-muted-foreground line-through opacity-50' : 'text-foreground'}`}>
+                        <span className={`text-sm sm:text-base font-bold transition-all ${problem.status === 'Solved' ? 'text-muted-foreground line-through opacity-50' : 'text-foreground'}`}>
                           {problem.title}
                         </span>
                         {problem.link && (
