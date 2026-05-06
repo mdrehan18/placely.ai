@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import { generateToken } from '../utils/token.js';
 
 export const registerUser = async (req, res, next) => {
+  console.log('--- Auth: Register Attempt ---', { email: req.body.email });
   try {
     const { name, email, password } = req.body;
 
@@ -28,6 +29,7 @@ export const registerUser = async (req, res, next) => {
 };
 
 export const loginUser = async (req, res, next) => {
+  console.log('--- Auth: Login Attempt ---', { email: req.body.email });
   try {
     const { email, password } = req.body;
 
