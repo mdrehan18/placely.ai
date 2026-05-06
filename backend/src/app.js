@@ -9,6 +9,8 @@ import authRoutes from './routes/auth.routes.js';
 import dsaRoutes from './routes/dsa.routes.js';
 import aiRoutes from './routes/ai.routes.js';
 import resumeRoutes from './routes/resume.routes.js';
+import interviewRoutes from './routes/interview.routes.js';
+
 
 const app = express();
 
@@ -27,12 +29,24 @@ app.use(cors({
   origin: function (origin, callback) {
     // allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
+    
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (!allowed) return false;
+      // Exact match
+      if (origin === allowed) return true;
+      // Match if allowed is just a domain and origin is https version
+      if (origin === `https://${allowed}` || origin === `http://${allowed}`) return true;
+      return false;
+    });
+
+    if (isAllowed) {
+      return callback(null, true);
+    } else {
       var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
       return callback(new Error(msg), false);
     }
-    return callback(null, true);
   },
+
   credentials: true,
 }));
 app.use(morgan('dev'));
@@ -54,6 +68,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dsa', dsaRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/resume', resumeRoutes);
+app.use('/api/interview', interviewRoutes);
+
 
 // Error Handling
 app.use(notFoundHandler);

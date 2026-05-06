@@ -1,66 +1,85 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
 import { Send, User, Bot, Loader2, Sparkles, Trophy, Power, MessageCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 
 const InterviewMode = () => {
-  const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
   const [isWaitingForAI, setIsWaitingForAI] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [interviewId, setInterviewId] = useState(null);
   
   const messagesEndRef = useRef(null);
   const { user } = useAuth();
 
   useEffect(() => {
-    // Derive socket URL (remove /api if present)
-    const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    
-    const newSocket = io(socketUrl, {
-      withCredentials: true,
-    });
-
-    setSocket(newSocket);
-
-    newSocket.on('interview_message', (data) => {
-      setMessages((prev) => [...prev, data]);
-      setIsWaitingForAI(false);
-      
-      if (data.isCompleted) {
-        setIsCompleted(true);
-      }
-    });
-
-    newSocket.on('interview_error', (data) => {
-      console.error(data.message);
-      setIsWaitingForAI(false);
-    });
-
-    return () => newSocket.disconnect();
-  }, []);
-
-  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isWaitingForAI]);
 
-  const startInterview = () => {
-    setIsInterviewStarted(true);
-    setIsWaitingForAI(true);
-    socket?.emit('start_interview', { userId: user._id });
+  const startInterview = async () => {
+    try {
+      setIsInterviewStarted(true);
+      setIsWaitingForAI(true);
+      const response = await api.post('/api/interview/start');
+      const { interviewId, message } = response.data.data;
+      
+      setInterviewId(interviewId);
+      setMessages([{ sender: 'ai', message }]);
+      setIsWaitingForAI(false);
+    } catch (error) {
+      console.error('Error starting interview:', error);
+      alert('Failed to start interview. Please try again.');
+      setIsInterviewStarted(false);
+      setIsWaitingForAI(false);
+    }
   };
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
-    if (!input.trim() || isWaitingForAI || isCompleted) return;
+    const cleanInput = input.trim();
+    
+    if (cleanInput.length < 5) {
+      alert('Please provide a more meaningful answer (at least 5 characters).');
+      return;
+    }
 
-    const newMsg = { sender: 'user', message: input };
-    setMessages((prev) => [...prev, newMsg]);
-    setIsWaitingForAI(true);
-    socket?.emit('send_answer', { answer: input });
+    if (isWaitingForAI || isCompleted) return;
+
+    // Add user message to UI
+    const userMsg = { sender: 'user', message: cleanInput };
+    setMessages((prev) => [...prev, userMsg]);
     setInput('');
+    setIsWaitingForAI(true);
+
+    try {
+      const response = await api.post('/api/interview/answer', {
+        interviewId,
+        answer: cleanInput
+      });
+
+      const { feedback, nextQuestion, isCompleted: sessionCompleted } = response.data.data;
+
+      // Add feedback and next question to messages
+      setMessages((prev) => [
+        ...prev, 
+        { sender: 'ai', message: feedback },
+        { sender: 'ai', message: nextQuestion }
+      ]);
+      
+      if (sessionCompleted) {
+        setIsCompleted(true);
+      }
+    } catch (error) {
+      console.error('Error submitting answer:', error);
+      const errorMsg = error.response?.data?.message || 'Something went wrong. Please try again.';
+      alert(errorMsg);
+    } finally {
+      setIsWaitingForAI(false);
+    }
   };
+
 
   return (
     <div className="h-[calc(100vh-10rem)] flex flex-col space-y-6">

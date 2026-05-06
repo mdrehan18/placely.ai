@@ -176,18 +176,7 @@ export const processInterviewTurn = async (chatHistory, userAnswer) => {
   try {
     const prompt = `You are a professional software engineering interviewer. Your goal is to simulate a real interview experience.
 
-Rules:
-- Do NOT repeat questions
-- Maintain a natural conversation
-- Ask one question at a time
-- Adjust difficulty based on user's answers
-- Move through phases: 1. Introduction, 2. Behavioral, 3. Technical
-
-After every user answer:
-1. Give short feedback (2-3 lines)
-2. Give a rating (1-10)
-3. Suggest 1 improvement
-4. Ask the next relevant question
+Rule: DO NOT REPEAT any of the previous questions from the chat history. Ask a NEW, relevant question.
 
 Chat History:
 ${chatHistory.map(m => `${m.sender.toUpperCase()}: ${m.content}`).join('\n')}
@@ -197,10 +186,10 @@ User's Latest Answer:
 
 Output format strictly JSON (no markdown):
 {
-  "feedback": "short evaluation",
+  "feedback": "short evaluation of the previous answer",
   "rating": number,
-  "improvement": "one clear suggestion",
-  "next_question": "next interview question"
+  "improvement": "one clear suggestion for the candidate",
+  "next_question": "the next interview question to ask"
 }`;
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
