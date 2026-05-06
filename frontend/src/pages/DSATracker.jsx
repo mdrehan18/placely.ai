@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Plus, Search, Filter, Trash2, Code2, Link as LinkIcon, CheckCircle2, Circle, Loader2, Sparkles, X } from 'lucide-react';
+import { Plus, Search, Filter, Trash2, Code2, Link as LinkIcon, CheckCircle2, Circle, Loader2, Sparkles, X, ArrowRight } from 'lucide-react';
 
 const DSATracker = () => {
   const [problems, setProblems] = useState([]);
@@ -60,7 +60,8 @@ const DSATracker = () => {
   };
 
   const filteredProblems = (problems || []).filter(p => {
-    const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!p) return false;
+    const matchesSearch = (p.title || '').toLowerCase().includes((searchTerm || '').toLowerCase());
     const matchesDifficulty = filterDifficulty === 'All' || p.difficulty === filterDifficulty;
     return matchesSearch && matchesDifficulty;
   });

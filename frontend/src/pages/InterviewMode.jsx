@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
-import { Send, User, Bot, Loader2, Sparkles, Trophy, ArrowRight, Power, MessageCircle } from 'lucide-react';
+import { Send, User, Bot, Loader2, Sparkles, Trophy, Power, MessageCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const InterviewMode = () => {
@@ -15,7 +15,10 @@ const InterviewMode = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_API_URL, {
+    // Derive socket URL (remove /api if present)
+    const socketUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    
+    const newSocket = io(socketUrl, {
       withCredentials: true,
     });
 

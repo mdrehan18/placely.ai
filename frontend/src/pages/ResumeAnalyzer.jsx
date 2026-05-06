@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import api from '../services/api';
-import { Upload, FileText, CheckCircle, XCircle, Sparkles, Loader2, AlertCircle } from 'lucide-react';
+import { Upload, FileText, CheckCircle, XCircle, Sparkles, Loader2, AlertCircle, Star } from 'lucide-react';
 
 const ResumeAnalyzer = () => {
   const [file, setFile] = useState(null);
