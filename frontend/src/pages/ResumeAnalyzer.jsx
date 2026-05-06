@@ -19,10 +19,10 @@ const ResumeAnalyzer = () => {
     formData.append('resume', file);
 
     try {
-      const response = await api.post('/resume/analyze', formData, {
+      const response = await api.post('/api/resume/analyze', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      
+
       if (typeof response.data.feedback === 'string') {
         setError(response.data.feedback);
       } else {
@@ -55,26 +55,26 @@ const ResumeAnalyzer = () => {
         <div className="lg:col-span-5">
           <div className="glass-card rounded-[2.5rem] p-10 flex flex-col items-center justify-center min-h-[450px] relative overflow-hidden group transition-all duration-500 hover:border-primary/30">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
-            
+
             <div className="w-24 h-24 bg-primary/10 text-primary rounded-[2rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-700 shadow-glow relative z-10">
               <Upload size={40} className="group-hover:-translate-y-1 transition-transform duration-500" />
             </div>
-            
+
             <h2 className="text-2xl font-bold font-heading mb-3 relative z-10">Select PDF Resume</h2>
             <p className="text-muted-foreground text-center mb-10 max-w-xs text-sm relative z-10 leading-relaxed opacity-80">
               Drag and drop your file here, or click below. Best for PDF formats under 5MB.
             </p>
-            
+
             <form onSubmit={handleUpload} className="w-full max-w-xs relative z-10 space-y-5">
               <div className="relative">
-                <input 
-                  type="file" 
-                  accept=".pdf" 
+                <input
+                  type="file"
+                  accept=".pdf"
                   onChange={(e) => setFile(e.target.files[0])}
                   className="hidden"
                   id="resume-upload"
                 />
-                <label 
+                <label
                   htmlFor="resume-upload"
                   className="flex items-center justify-center gap-3 w-full p-4 bg-secondary/30 border border-border/50 rounded-2xl cursor-pointer hover:bg-secondary/50 transition-all group/label"
                 >
@@ -85,8 +85,8 @@ const ResumeAnalyzer = () => {
                 </label>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isUploading || !file}
                 className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary/90 disabled:opacity-50 transition-all shadow-glow hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
               >
@@ -119,17 +119,17 @@ const ResumeAnalyzer = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-8 pb-10 border-b border-border/30">
                   <div className="relative">
                     <svg className="w-32 h-32 transform -rotate-90">
-                      <circle className="text-secondary/40" strokeWidth="10" stroke="currentColor" fill="transparent" r="54" cx="64" cy="64"/>
-                      <circle 
-                        className={`${analysis.ats_score > 75 ? 'text-success' : 'text-warning'}`} 
-                        strokeWidth="10" 
-                        strokeDasharray="339.3" 
+                      <circle className="text-secondary/40" strokeWidth="10" stroke="currentColor" fill="transparent" r="54" cx="64" cy="64" />
+                      <circle
+                        className={`${analysis.ats_score > 75 ? 'text-success' : 'text-warning'}`}
+                        strokeWidth="10"
+                        strokeDasharray="339.3"
                         strokeDashoffset={339.3 - (339.3 * analysis.ats_score) / 100}
                         strokeLinecap="round"
-                        stroke="currentColor" 
-                        fill="transparent" 
-                        r="54" 
-                        cx="64" 
+                        stroke="currentColor"
+                        fill="transparent"
+                        r="54"
+                        cx="64"
                         cy="64"
                         style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                       />
@@ -151,7 +151,7 @@ const ResumeAnalyzer = () => {
                     <Sparkles size={48} className="text-primary" />
                   </div>
                   <p className="text-[15px] font-medium leading-relaxed text-foreground/90 italic">
-                    <span className="font-extrabold text-primary not-italic uppercase tracking-widest text-xs block mb-2">AI Summary</span> 
+                    <span className="font-extrabold text-primary not-italic uppercase tracking-widest text-xs block mb-2">AI Summary</span>
                     "{analysis.final_summary}"
                   </p>
                 </div>
@@ -183,7 +183,7 @@ const ResumeAnalyzer = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4 pt-4">
                   <div className="flex items-center gap-2.5 font-bold text-warning text-sm uppercase tracking-widest">
                     <Star size={18} /> Suggested Keywords

@@ -17,7 +17,7 @@ const Login = () => {
     setError('');
     setIsLoading(true);
     try {
-      const response = await api.post('/auth/login', { email, password });
+      const response = await api.post('/api/auth/login', { email, password });
       const userData = response.data.data;
       localStorage.setItem('user', JSON.stringify(userData));
       login(userData);
@@ -43,7 +43,7 @@ const Login = () => {
           <h1 className="text-4xl font-bold text-foreground mb-3 font-heading tracking-tight">Login to placely</h1>
           <p className="text-muted-foreground text-[15px]">The smartest way to ace your interviews.</p>
         </div>
-        
+
         <div className="glass-card p-8 rounded-3xl shadow-2xl relative">
           {error && (
             <div className="bg-destructive/10 border border-destructive/20 text-destructive text-sm p-4 rounded-xl mb-6 flex items-start gap-3 animate-shake">
@@ -51,14 +51,14 @@ const Login = () => {
               {error}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-foreground/80 ml-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
@@ -75,8 +75,8 @@ const Login = () => {
               </div>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
@@ -86,7 +86,7 @@ const Login = () => {
               </div>
             </div>
 
-            <button 
+            <button
               type="submit"
               disabled={isLoading}
               className="w-full py-4 bg-primary text-primary-foreground rounded-2xl font-bold hover:bg-primary/90 transition-all shadow-glow hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:hover:scale-100 flex items-center justify-center gap-2 mt-4"
@@ -95,7 +95,7 @@ const Login = () => {
             </button>
           </form>
         </div>
-        
+
         <div className="mt-8 text-center text-[15px] text-muted-foreground">
           Don't have an account? <Link to="/register" className="text-primary font-bold hover:underline transition-all">Create Account</Link>
         </div>

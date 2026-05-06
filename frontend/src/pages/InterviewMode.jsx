@@ -16,7 +16,7 @@ const InterviewMode = () => {
 
   useEffect(() => {
     // Derive socket URL (remove /api if present)
-    const socketUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     
     const newSocket = io(socketUrl, {
       withCredentials: true,

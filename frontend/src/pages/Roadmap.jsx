@@ -15,7 +15,7 @@ const Roadmap = () => {
 
   const fetchRoadmaps = async () => {
     try {
-      const response = await api.get('/ai/roadmap');
+      const response = await api.get('/api/ai/roadmap');
       setRoadmaps(response.data.data);
     } catch (error) {
       console.error('Error fetching roadmaps:', error);
@@ -28,7 +28,7 @@ const Roadmap = () => {
 
     setIsGenerating(true);
     try {
-      await api.post('/ai/roadmap/generate', { goal, duration });
+      await api.post('/api/ai/roadmap/generate', { goal, duration });
       await fetchRoadmaps();
       setGoal('');
     } catch (error) {
@@ -42,12 +42,12 @@ const Roadmap = () => {
   const handleToggleTask = async (roadmapId, taskId, currentStatus) => {
     if (togglingTaskId) return;
     setTogglingTaskId(taskId);
-    
+
     // Optimistic Update
     setRoadmaps(prevRoadmaps => prevRoadmaps.map(rm => {
       if (rm._id === roadmapId) {
         const newPlan = rm.plan.map(dayPlan => {
-          const updatedTasks = dayPlan.tasks.map(t => 
+          const updatedTasks = dayPlan.tasks.map(t =>
             t._id === taskId ? { ...t, completed: !currentStatus } : t
           );
           return {
@@ -62,7 +62,7 @@ const Roadmap = () => {
     }));
 
     try {
-      await api.patch(`/ai/roadmap/${roadmapId}/task/${taskId}`);
+      await api.patch(`/api/ai/roadmap/${roadmapId}/task/${taskId}`);
     } catch (error) {
       console.error('Error toggling task:', error);
       await fetchRoadmaps();
@@ -71,10 +71,10 @@ const Roadmap = () => {
     }
   };
 
-  const currentRoadmap = roadmaps[0]; 
+  const currentRoadmap = roadmaps[0];
   let totalTasks = 0;
   let completedTasks = 0;
-  
+
   if (currentRoadmap) {
     currentRoadmap.plan.forEach(day => {
       day.tasks.forEach(task => {
@@ -103,22 +103,22 @@ const Roadmap = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
         <h2 className="text-2xl font-black font-heading mb-2 relative z-10 tracking-tight">Generate New Plan</h2>
         <p className="text-muted-foreground font-medium mb-8 relative z-10 opacity-70">Describe your target (e.g., Frontend at Google) and your timeframe.</p>
-        
+
         <form onSubmit={handleGenerate} className="flex flex-col lg:flex-row gap-4 relative z-10">
           <div className="flex-1 relative group">
             <Target className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={20} />
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={goal}
               onChange={(e) => setGoal(e.target.value)}
-              placeholder="e.g. Master Backend with Node.js" 
+              placeholder="e.g. Master Backend with Node.js"
               className="w-full pl-12 pr-4 py-4 bg-background border border-border/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all font-bold"
               required
             />
           </div>
           <div className="lg:w-56 relative group">
             <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={20} />
-            <select 
+            <select
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               className="w-full pl-12 pr-10 py-4 bg-background border border-border/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary/10 appearance-none font-bold cursor-pointer transition-all"
@@ -129,8 +129,8 @@ const Roadmap = () => {
               <option value="3 months">3 Months</option>
             </select>
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isGenerating || !goal}
             className="px-10 py-4 bg-primary text-primary-foreground font-black rounded-2xl hover:bg-primary/90 disabled:opacity-50 transition-all shadow-glow hover:scale-[1.02] active:scale-95 whitespace-nowrap"
           >
@@ -157,14 +157,14 @@ const Roadmap = () => {
                 <Calendar size={14} className="text-primary" /> TIME HORIZON: <span className="text-foreground">{currentRoadmap.duration.toUpperCase()}</span>
               </p>
             </div>
-            
+
             <div className="w-full md:w-80">
               <div className="flex justify-between text-[11px] mb-3 font-black uppercase tracking-[0.1em]">
                 <span className="text-muted-foreground">Completion Progress</span>
                 <span className="text-primary">{progressPercentage}% Achieved</span>
               </div>
               <div className="w-full h-3 bg-secondary/50 rounded-full overflow-hidden border border-border/30">
-                <div 
+                <div
                   className="h-full bg-primary transition-all duration-1000 ease-out shadow-glow"
                   style={{ width: `${progressPercentage}%` }}
                 />
@@ -178,7 +178,7 @@ const Roadmap = () => {
                 <div className={`absolute left-0 md:left-2 w-16 h-16 flex items-center justify-center rounded-[1.5rem] border-4 border-background bg-card text-muted-foreground shadow-soft transition-all duration-500 group-hover:scale-110 z-10 ${dayPlan.completed ? 'border-primary/20 bg-primary text-primary-foreground' : 'border-border/50'}`}>
                   {dayPlan.completed ? <CheckCircle2 size={28} /> : <span className="text-xl font-black font-heading tracking-tighter">{dayPlan.day}</span>}
                 </div>
-                
+
                 <div className={`glass-card rounded-[2rem] p-8 shadow-soft transition-all duration-500 ${dayPlan.completed ? 'border-primary/20 bg-primary/[0.02]' : 'hover:border-primary/20'}`}>
                   <h3 className="font-extrabold text-xl font-heading mb-6 text-foreground flex items-center gap-3">
                     {dayPlan.title}
@@ -187,7 +187,7 @@ const Roadmap = () => {
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
                     {dayPlan.tasks.map((task) => (
                       <div key={task._id} className="flex items-start gap-4 p-4 rounded-2xl bg-secondary/20 border border-border/30 hover:bg-secondary/40 transition-all group/task">
-                        <button 
+                        <button
                           onClick={() => handleToggleTask(currentRoadmap._id, task._id, task.completed)}
                           disabled={togglingTaskId === task._id}
                           className="mt-0.5 flex-shrink-0 transition-transform active:scale-90"

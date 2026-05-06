@@ -17,7 +17,7 @@ const DSATracker = () => {
   const fetchProblems = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get('/dsa');
+      const response = await api.get('/api/dsa');
       setProblems(response.data.data);
     } catch (error) {
       console.error('Error fetching problems:', error);
@@ -29,7 +29,7 @@ const DSATracker = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/dsa', formData);
+      await api.post('/api/dsa', formData);
       setIsModalOpen(false);
       setFormData({ title: '', link: '', difficulty: 'Easy', status: 'Unsolved' });
       fetchProblems();
@@ -42,7 +42,7 @@ const DSATracker = () => {
     const newStatus = currentStatus === 'Solved' ? 'Unsolved' : 'Solved';
     setProblems((problems || []).map(p => p._id === id ? { ...p, status: newStatus } : p));
     try {
-      await api.put(`/dsa/${id}`, { status: newStatus });
+      await api.put(`/api/dsa/${id}`, { status: newStatus });
     } catch (error) {
       console.error('Error updating status:', error);
       fetchProblems();
@@ -52,7 +52,7 @@ const DSATracker = () => {
   const handleDelete = async (id) => {
     setProblems((problems || []).filter(p => p._id !== id));
     try {
-      await api.delete(`/dsa/${id}`);
+      await api.delete(`/api/dsa/${id}`);
     } catch (error) {
       console.error('Error deleting problem:', error);
       fetchProblems();
@@ -78,7 +78,7 @@ const DSATracker = () => {
             Keep track of your problem-solving journey and ace your coding rounds.
           </p>
         </div>
-        <button 
+        <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary/90 transition-all shadow-glow hover:scale-[1.02] active:scale-95"
         >
@@ -89,9 +89,9 @@ const DSATracker = () => {
       <div className="glass-card rounded-[2.5rem] p-4 sm:p-6 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={20} />
-          <input 
-            type="text" 
-            placeholder="Filter by title..." 
+          <input
+            type="text"
+            placeholder="Filter by title..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-12 pr-4 py-4 bg-background/50 border border-border/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all font-medium"
@@ -99,7 +99,7 @@ const DSATracker = () => {
         </div>
         <div className="relative sm:w-64 group">
           <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={20} />
-          <select 
+          <select
             value={filterDifficulty}
             onChange={(e) => setFilterDifficulty(e.target.value)}
             className="w-full pl-12 pr-10 py-4 bg-background/50 border border-border/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary/10 appearance-none font-bold cursor-pointer transition-all"
@@ -141,7 +141,7 @@ const DSATracker = () => {
                 {filteredProblems.map((problem) => (
                   <tr key={problem._id} className="hover:bg-primary/[0.02] transition-colors group">
                     <td className="py-6 px-8 w-24">
-                      <button 
+                      <button
                         onClick={() => handleStatusChange(problem._id, problem.status)}
                         className="transition-transform active:scale-90"
                       >
@@ -169,16 +169,15 @@ const DSATracker = () => {
                       </div>
                     </td>
                     <td className="py-6 px-8">
-                      <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider border ${
-                        problem.difficulty === 'Easy' ? 'bg-success/5 text-success border-success/10' :
-                        problem.difficulty === 'Medium' ? 'bg-warning/5 text-warning border-warning/10' :
-                        'bg-destructive/5 text-destructive border-destructive/10'
-                      }`}>
+                      <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider border ${problem.difficulty === 'Easy' ? 'bg-success/5 text-success border-success/10' :
+                          problem.difficulty === 'Medium' ? 'bg-warning/5 text-warning border-warning/10' :
+                            'bg-destructive/5 text-destructive border-destructive/10'
+                        }`}>
                         {problem.difficulty}
                       </span>
                     </td>
                     <td className="py-6 px-8 text-right">
-                      <button 
+                      <button
                         onClick={() => handleDelete(problem._id)}
                         className="p-3 text-muted-foreground hover:bg-destructive/10 hover:text-destructive rounded-xl transition-all group/del"
                       >
@@ -209,10 +208,10 @@ const DSATracker = () => {
             <form onSubmit={handleSubmit} className="p-10 space-y-6">
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Problem Title</label>
-                <input 
-                  type="text" 
-                  value={formData.title} 
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="e.g. Merge Intervals"
                   className="w-full p-4 bg-background border border-border/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all font-bold"
                   required
@@ -220,10 +219,10 @@ const DSATracker = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">LeetCode / GFG Link</label>
-                <input 
-                  type="url" 
-                  value={formData.link} 
-                  onChange={(e) => setFormData({...formData, link: e.target.value})}
+                <input
+                  type="url"
+                  value={formData.link}
+                  onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                   placeholder="https://..."
                   className="w-full p-4 bg-background border border-border/50 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all font-bold"
                 />
@@ -235,20 +234,19 @@ const DSATracker = () => {
                     <button
                       key={diff}
                       type="button"
-                      onClick={() => setFormData({...formData, difficulty: diff})}
-                      className={`py-3 rounded-2xl text-xs font-bold transition-all border ${
-                        formData.difficulty === diff 
-                        ? 'bg-primary text-primary-foreground border-primary shadow-glow scale-[1.05]' 
-                        : 'bg-secondary/50 border-border/50 text-muted-foreground hover:border-primary/30'
-                      }`}
+                      onClick={() => setFormData({ ...formData, difficulty: diff })}
+                      className={`py-3 rounded-2xl text-xs font-bold transition-all border ${formData.difficulty === diff
+                          ? 'bg-primary text-primary-foreground border-primary shadow-glow scale-[1.05]'
+                          : 'bg-secondary/50 border-border/50 text-muted-foreground hover:border-primary/30'
+                        }`}
                     >
                       {diff}
                     </button>
                   ))}
                 </div>
               </div>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="w-full py-5 bg-primary text-primary-foreground font-black rounded-[2rem] hover:bg-primary/90 transition-all shadow-glow hover:scale-[1.02] active:scale-95 mt-4"
               >
                 Save to Tracker
