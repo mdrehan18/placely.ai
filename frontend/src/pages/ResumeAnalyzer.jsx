@@ -117,33 +117,38 @@ const ResumeAnalyzer = () => {
             ) : analysis ? (
               <div className="space-y-10 animate-slide-up h-full">
                 <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 pb-8 sm:pb-10 border-b border-border/30">
-                  <div className="relative">
-                    <svg className="w-24 h-24 sm:w-32 sm:h-32 transform -rotate-90">
-                      <circle className="text-secondary/40" strokeWidth="8" sm:strokeWidth="10" stroke="currentColor" fill="transparent" r="44" sm:r="54" cx="48" sm:cx="64" cy="48" sm:cy="64" />
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32">
+                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                      {/* Background circle */}
+                      <circle
+                        className="text-secondary/40"
+                        strokeWidth="8"
+                        stroke="currentColor"
+                        fill="transparent"
+                        r="42"
+                        cx="50"
+                        cy="50"
+                      />
+                      {/* Progress circle */}
                       <circle
                         className={`${analysis.ats_score > 75 ? 'text-success' : 'text-warning'}`}
                         strokeWidth="8"
-                        sm:strokeWidth="10"
-                        strokeDasharray="276.46"
-                        sm:strokeDasharray="339.3"
-                        strokeDashoffset={276.46 - (276.46 * analysis.ats_score) / 100}
-                        sm:strokeDashoffset={339.3 - (339.3 * analysis.ats_score) / 100}
+                        strokeDasharray="263.89"
+                        strokeDashoffset={263.89 - (263.89 * analysis.ats_score) / 100}
                         strokeLinecap="round"
                         stroke="currentColor"
                         fill="transparent"
-                        r="44"
-                        sm:r="54"
-                        cx="48"
-                        sm:cx="64"
-                        cy="48"
-                        sm:cy="64"
+                        r="42"
+                        cx="50"
+                        cy="50"
                         style={{ transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
                       />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center flex-col">
+                    <div className="absolute inset-0 flex items-center justify-center">
                       <span className="text-2xl sm:text-4xl font-extrabold font-heading tracking-tighter">{analysis.ats_score}</span>
                     </div>
                   </div>
+
                   <div className="text-center sm:text-left">
                     <h3 className="text-2xl sm:text-3xl font-extrabold font-heading mb-2 tracking-tight">ATS Compatibility</h3>
                     <p className="text-xs sm:text-sm text-muted-foreground font-medium opacity-80 leading-relaxed max-w-sm">
