@@ -1,5 +1,5 @@
 {
-  "name": "ai-interview-coach-backend",
+  "name": "placely-backend",
   "version": "1.0.0",
   "description": "Backend for AI Interview Coach & Placement Tracker",
   "main": "src/server.js",

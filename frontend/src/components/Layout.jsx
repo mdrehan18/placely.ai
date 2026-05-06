@@ -78,7 +78,7 @@ const Layout = () => {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold text-xl shadow-glow">
               P
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Placely<span className="text-primary">.ai</span></h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Placely</h1>
           </div>
           <button 
             className="lg:hidden text-muted-foreground hover:text-foreground transition-colors p-1"
