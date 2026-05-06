@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { LayoutDashboard, Code2, MessageSquare, FileText, Map, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  Code2, 
+  MessageSquare, 
+  FileText, 
+  Map, 
+  LogOut, 
+  Sun, 
+  Moon, 
+  Menu, 
+  X,
+  ChevronRight
+} from 'lucide-react';
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -17,131 +29,127 @@ const Layout = () => {
     navigate('/login');
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user) {
       navigate('/login');
     }
   }, [user, navigate]);
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
-  const NavLinks = () => (
-    <>
-      {[
-        { path: '/', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
-        { path: '/dsa', icon: <Code2 size={20} />, label: 'DSA Tracker' },
-        { path: '/interview', icon: <MessageSquare size={20} />, label: 'AI Interview' },
-        { path: '/resume', icon: <FileText size={20} />, label: 'Resume Analyzer' },
-        { path: '/roadmap', icon: <Map size={20} />, label: 'Study Roadmap' }
-      ].map((item) => {
-        const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
-        return (
-          <Link 
-            key={item.path}
-            to={item.path} 
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
-              isActive 
-                ? 'bg-primary/10 text-primary font-medium' 
-                : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-            }`}
-          >
-            <span className={`${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'} transition-colors`}>
-              {item.icon}
-            </span>
-            {item.label}
-          </Link>
-        );
-      })}
-    </>
-  );
+  const navItems = [
+    { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/dsa', icon: Code2, label: 'DSA Tracker' },
+    { path: '/interview', icon: MessageSquare, label: 'AI Interview' },
+    { path: '/resume', icon: FileText, label: 'Resume Analyzer' },
+    { path: '/roadmap', icon: Map, label: 'Study Roadmap' }
+  ];
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden selection:bg-primary/20">
+    <div className="flex h-screen bg-background overflow-hidden font-sans">
       
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden transition-opacity"
+          className="fixed inset-0 z-40 bg-background/40 backdrop-blur-sm lg:hidden transition-all duration-300"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-card border-r border-border shadow-soft transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 flex flex-col ${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        <div className="flex items-center justify-between p-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold text-xl shadow-glow">
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-72 glass border-r border-border/50 shadow-2xl
+        transform transition-all duration-500 ease-out lg:relative lg:translate-x-0 
+        flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+        <div className="p-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl shadow-glow rotate-3 hover:rotate-0 transition-transform duration-300">
               P
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Placely</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground font-heading">placely</h1>
           </div>
-          <button 
-            className="lg:hidden text-muted-foreground hover:text-foreground transition-colors p-1"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <X size={24} />
-          </button>
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto custom-scrollbar">
-          <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Menu</p>
-          <NavLinks />
+        <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto custom-scrollbar pt-2">
+          <p className="px-4 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-4 opacity-70">Main Menu</p>
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+            return (
+              <Link 
+                key={item.path}
+                to={item.path} 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`
+                  flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 group
+                  ${isActive 
+                    ? 'bg-primary text-primary-foreground shadow-glow scale-[1.02]' 
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground hover:translate-x-1'}
+                `}
+              >
+                <div className="flex items-center gap-3">
+                  <item.icon size={20} className={isActive ? 'text-current' : 'group-hover:text-primary transition-colors'} />
+                  <span className="font-medium text-[15px]">{item.label}</span>
+                </div>
+                {isActive && <ChevronRight size={16} className="animate-pulse" />}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="p-4 border-t border-border">
-          <div className="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-secondary/50 border border-border/50">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-primary-foreground font-semibold shadow-sm">
-              {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+        <div className="p-6 mt-auto">
+          <div className="p-4 rounded-2xl bg-secondary/30 border border-border/50 flex items-center gap-3 mb-4 group hover:bg-secondary/50 transition-colors">
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold shadow-sm">
+              {user.name?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">{user.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+              <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
+              <p className="text-[11px] text-muted-foreground truncate opacity-70">{user.email}</p>
             </div>
           </div>
           <button 
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors font-medium"
+            className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-300 font-medium group"
           >
-            <LogOut size={20} /> Logout
+            <LogOut size={20} className="group-hover:-translate-x-1 transition-transform" /> 
+            <span>Logout</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col w-full min-w-0">
+      <main className="flex-1 flex flex-col w-full min-w-0 bg-[#fbfbfd] dark:bg-[#020202]">
         {/* Top Header */}
-        <header className="h-16 flex-shrink-0 border-b border-border bg-background/80 backdrop-blur-md flex items-center justify-between px-4 sm:px-8 z-30 sticky top-0">
+        <header className="h-20 flex-shrink-0 flex items-center justify-between px-6 sm:px-10 z-30 sticky top-0 bg-background/50 backdrop-blur-xl border-b border-border/30">
           <div className="flex items-center gap-4">
             <button 
-              className="lg:hidden p-2 text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-secondary"
+              className="lg:hidden p-2.5 text-muted-foreground hover:text-foreground transition-all rounded-xl hover:bg-secondary border border-transparent hover:border-border"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu size={24} />
             </button>
-            <h2 className="text-lg font-semibold text-foreground hidden sm:block">
-              {location.pathname === '/' ? 'Welcome back!' : location.pathname.substring(1).charAt(0).toUpperCase() + location.pathname.substring(2)}
-            </h2>
+            <div className="hidden sm:block">
+              <h2 className="text-xl font-bold text-foreground font-heading capitalize">
+                {location.pathname === '/' ? 'Overview' : location.pathname.substring(1).replace('-', ' ')}
+              </h2>
+              <p className="text-xs text-muted-foreground opacity-70">Welcome back to your preparation hub.</p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button
               onClick={toggleTheme}
-              className="p-2 text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-full transition-all duration-200 shadow-sm"
+              className="p-3 text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-2xl transition-all duration-300 border border-border/50 shadow-sm"
               aria-label="Toggle Theme"
             >
-              {theme === 'dark' ? <Sun size={20} className="text-yellow-400" /> : <Moon size={20} className="text-indigo-600" />}
+              {theme === 'dark' ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} className="text-primary" />}
             </button>
           </div>
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto bg-background/50 p-4 sm:p-8 custom-scrollbar relative">
-          <div className="max-w-7xl mx-auto">
+        <div className="flex-1 overflow-auto custom-scrollbar px-6 py-8 sm:px-10 sm:py-10 relative">
+          <div className="max-w-7xl mx-auto h-full animate-slide-up">
             <Outlet />
           </div>
         </div>

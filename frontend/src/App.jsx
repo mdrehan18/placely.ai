@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -9,22 +9,20 @@ import InterviewMode from './pages/InterviewMode';
 import ResumeAnalyzer from './pages/ResumeAnalyzer';
 import Roadmap from './pages/Roadmap';
 import { useAuth } from './context/AuthContext';
+import { Loader2 } from 'lucide-react';
 
 const ProtectedRoute = ({ children }) => {
-  const { user, login } = useAuth();
+  const { user, isLoading } = useAuth();
   
-  useEffect(() => {
-    if (!user) {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        login(JSON.parse(storedUser));
-      }
-    }
-  }, [user, login]);
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+      </div>
+    );
+  }
 
-  const isAuthenticated = user || localStorage.getItem('user');
-  
-  if (!isAuthenticated) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
@@ -45,6 +43,9 @@ function App() {
           <Route path="resume" element={<ResumeAnalyzer />} />
           <Route path="roadmap" element={<Roadmap />} />
         </Route>
+
+        {/* Catch all - Redirect to dashboard */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

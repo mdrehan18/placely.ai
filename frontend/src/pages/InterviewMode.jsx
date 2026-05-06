@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
-import { Send, User, Bot, Loader2 } from 'lucide-react';
+import { Send, User, Bot, Loader2, Sparkles, Trophy, ArrowRight, Power, MessageCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const InterviewMode = () => {
@@ -15,7 +15,6 @@ const InterviewMode = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    // Connect to Socket.io server
     const newSocket = io(import.meta.env.VITE_API_URL, {
       withCredentials: true,
     });
@@ -61,57 +60,66 @@ const InterviewMode = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex flex-col space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="h-[calc(100vh-10rem)] flex flex-col space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-heading mb-1">AI Interview Coach</h1>
-          <p className="text-muted-foreground text-sm">Practice with our intelligent conversational AI.</p>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold mb-4 uppercase tracking-widest">
+            <Sparkles size={12} className="fill-current" /> AI Coaching
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground font-heading">Mock Interview</h1>
         </div>
         {isCompleted && (
-          <span className="px-4 py-1.5 bg-success/10 border border-success/20 text-success text-sm font-bold tracking-wide uppercase rounded-full">
-            Completed
-          </span>
+          <div className="px-6 py-2 bg-success/10 border border-success/20 text-success text-xs font-black tracking-widest uppercase rounded-2xl flex items-center gap-2 shadow-sm">
+            <Trophy size={14} /> Session Completed
+          </div>
         )}
       </div>
 
       {!isInterviewStarted ? (
-        <div className="flex-1 flex flex-col items-center justify-center border border-border rounded-2xl bg-card shadow-soft relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
-          <div className="text-center max-w-md p-8 relative z-10">
-            <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent text-primary-foreground rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-glow rotate-3">
-              <Bot size={40} className="-rotate-3" />
+        <div className="flex-1 flex flex-col items-center justify-center glass-card rounded-[3rem] p-10 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" />
+          
+          <div className="relative z-10 text-center max-w-xl">
+            <div className="w-24 h-24 bg-primary text-primary-foreground rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-glow rotate-6 group-hover:rotate-0 transition-all duration-700">
+              <MessageCircle size={48} />
             </div>
-            <h2 className="text-2xl font-bold font-heading mb-3">Ready for your mock interview?</h2>
-            <p className="text-muted-foreground mb-8 text-sm leading-relaxed">
-              Our AI coach will ask you 5 technical and behavioral questions, evaluate your responses in real-time, and provide an actionable feedback summary.
+            <h2 className="text-3xl font-extrabold font-heading mb-4 tracking-tight">Ready to test your skills?</h2>
+            <p className="text-muted-foreground text-lg mb-10 leading-relaxed font-medium opacity-80">
+              Our AI coach will conduct a 5-round technical and behavioral interview. You'll receive real-time evaluation and a full performance score.
             </p>
             <button 
               onClick={startInterview}
               disabled={isWaitingForAI}
-              className="w-full sm:w-auto px-8 py-3.5 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-md shadow-primary/25 disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0"
+              className="px-10 py-5 bg-primary text-primary-foreground font-black text-lg rounded-[2rem] hover:bg-primary/90 transition-all shadow-glow hover:scale-[1.05] active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3 mx-auto"
             >
-              {isWaitingForAI ? 'Connecting to Coach...' : 'Start Session'}
+              {isWaitingForAI ? <><Loader2 className="animate-spin" size={24} /> Connecting...</> : <>Start Session <Power size={20} /></>}
             </button>
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col border border-border rounded-2xl bg-card shadow-soft overflow-hidden">
+        <div className="flex-1 flex flex-col glass-card rounded-[3rem] overflow-hidden shadow-2xl relative border-border/30">
           {/* Chat area */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-background/30 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8 custom-scrollbar bg-gradient-to-b from-transparent to-secondary/10">
+            {messages.length === 0 && !isWaitingForAI && (
+              <div className="h-full flex items-center justify-center text-center opacity-40">
+                <p className="font-bold tracking-widest uppercase text-xs">Waiting for AI to start...</p>
+              </div>
+            )}
+            
             {messages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`flex max-w-[85%] sm:max-w-[75%] gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center shadow-sm ${
-                    msg.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-gradient-to-br from-secondary to-muted text-foreground border border-border'
+              <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-slide-up`}>
+                <div className={`flex max-w-[85%] sm:max-w-[70%] gap-4 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className={`w-10 h-10 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-lg ${
+                    msg.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-card border border-border text-foreground'
                   }`}>
-                    {msg.sender === 'user' ? <User size={16} /> : <Bot size={16} />}
+                    {msg.sender === 'user' ? <User size={20} /> : <Bot size={20} />}
                   </div>
-                  <div className={`p-4 rounded-2xl text-[15px] leading-relaxed shadow-sm ${
+                  <div className={`p-6 rounded-[2rem] text-[15px] leading-relaxed shadow-soft ${
                     msg.sender === 'user' 
                       ? 'bg-primary text-primary-foreground rounded-tr-sm' 
-                      : msg.message.startsWith('Feedback:') || msg.message.startsWith('Interview Complete!')
-                        ? 'bg-accent/10 border border-accent/20 text-foreground rounded-tl-sm font-medium'
-                        : 'bg-card border border-border text-foreground rounded-tl-sm'
+                      : msg.message.includes('Feedback:') || msg.message.includes('Score:')
+                        ? 'bg-accent/10 border border-accent/20 text-foreground rounded-tl-sm font-semibold'
+                        : 'bg-card border border-border/50 text-foreground rounded-tl-sm'
                   }`}>
                     {msg.message}
                   </div>
@@ -121,13 +129,13 @@ const InterviewMode = () => {
             
             {isWaitingForAI && (
               <div className="flex justify-start animate-pulse">
-                <div className="flex gap-3 flex-row">
-                  <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-secondary to-muted text-foreground border border-border shadow-sm">
-                    <Bot size={16} />
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-2xl flex-shrink-0 flex items-center justify-center bg-card border border-border shadow-lg">
+                    <Bot size={20} />
                   </div>
-                  <div className="p-4 rounded-2xl bg-card border border-border rounded-tl-sm flex items-center gap-3 shadow-sm">
-                    <Loader2 size={16} className="animate-spin text-primary" />
-                    <span className="text-sm font-medium text-muted-foreground">AI is evaluating...</span>
+                  <div className="p-6 rounded-[2rem] bg-card border border-border/50 rounded-tl-sm flex items-center gap-4 shadow-soft">
+                    <Loader2 size={18} className="animate-spin text-primary" />
+                    <span className="text-sm font-bold text-muted-foreground tracking-wide uppercase">AI is evaluating...</span>
                   </div>
                 </div>
               </div>
@@ -136,24 +144,25 @@ const InterviewMode = () => {
           </div>
 
           {/* Input area */}
-          <div className="p-4 sm:p-5 bg-card border-t border-border">
-            <form onSubmit={sendMessage} className="flex gap-3 relative max-w-5xl mx-auto">
+          <div className="p-6 sm:p-8 bg-card/50 border-t border-border/30 backdrop-blur-xl">
+            <form onSubmit={sendMessage} className="flex gap-4 relative max-w-5xl mx-auto group">
               <input 
                 type="text" 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 disabled={isWaitingForAI || isCompleted}
-                placeholder={isCompleted ? "Interview completed. Check your dashboard." : "Type your detailed answer here..."} 
-                className="flex-1 p-3.5 pl-5 bg-background border border-input rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 pr-14 disabled:opacity-50 transition-shadow shadow-sm"
+                placeholder={isCompleted ? "Session completed. Great job!" : "Express your answer clearly..."} 
+                className="flex-1 p-5 pl-8 bg-background border border-border/50 rounded-[2rem] focus:outline-none focus:ring-4 focus:ring-primary/10 pr-20 disabled:opacity-50 transition-all shadow-inner text-[15px] font-medium"
               />
               <button 
                 type="submit"
                 disabled={!input.trim() || isWaitingForAI || isCompleted}
-                className="absolute right-2 top-2 bottom-2 w-11 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
+                className="absolute right-2.5 top-2.5 bottom-2.5 w-14 bg-primary text-primary-foreground rounded-[1.5rem] flex items-center justify-center hover:bg-primary/90 disabled:opacity-50 transition-all shadow-glow hover:scale-105 active:scale-95 group-hover:shadow-primary/30"
               >
-                <Send size={18} className="ml-0.5" />
+                <Send size={22} className="ml-1" />
               </button>
             </form>
+            <p className="text-center mt-4 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-40">Press Enter to Send Answer</p>
           </div>
         </div>
       )}

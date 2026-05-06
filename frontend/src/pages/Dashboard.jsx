@@ -1,8 +1,8 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { useNavigate } from 'react-router-dom';
-import { Trophy, Clock, CheckCircle2, Target, TrendingUp, Sparkles } from 'lucide-react';
+import { Trophy, Clock, CheckCircle2, Target, TrendingUp, Sparkles, ChevronRight, Star } from 'lucide-react';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -10,173 +10,195 @@ const Dashboard = () => {
 
   // Mock data for charts
   const activityData = [
-    { name: 'Mon', solved: 2, expected: 3 },
-    { name: 'Tue', solved: 5, expected: 3 },
-    { name: 'Wed', solved: 3, expected: 4 },
-    { name: 'Thu', solved: 7, expected: 4 },
-    { name: 'Fri', solved: 4, expected: 5 },
-    { name: 'Sat', solved: 6, expected: 6 },
-    { name: 'Sun', solved: 8, expected: 6 },
+    { name: 'Mon', solved: 2 },
+    { name: 'Tue', solved: 5 },
+    { name: 'Wed', solved: 3 },
+    { name: 'Thu', solved: 7 },
+    { name: 'Fri', solved: 4 },
+    { name: 'Sat', solved: 6 },
+    { name: 'Sun', solved: 8 },
   ];
 
-  const StatCard = ({ title, value, subtitle, icon: Icon, trend }) => (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft hover:shadow-glow transition-all duration-300 group">
-      <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-        <Icon size={64} className="text-primary transform rotate-12 group-hover:scale-110 transition-transform duration-500" />
-      </div>
+  const StatCard = ({ title, value, subtitle, icon: Icon, trend, color }) => (
+    <div className="relative overflow-hidden rounded-[2rem] border border-border/50 bg-card p-7 shadow-soft hover:shadow-glow transition-all duration-500 group">
+      <div className={`absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500 bg-${color}`} />
       <div className="relative z-10 flex flex-col h-full justify-between">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-medium text-muted-foreground tracking-wide text-sm">{title}</h3>
-          <div className="p-2 rounded-lg bg-primary/10 text-primary">
-            <Icon size={20} />
+        <div className="flex items-center justify-between mb-5">
+          <div className={`p-3 rounded-2xl bg-${color}/10 text-${color} shadow-sm group-hover:scale-110 transition-transform duration-500`}>
+            <Icon size={22} />
           </div>
+          {trend && (
+            <span className={`text-[10px] font-bold px-2 py-1 rounded-full bg-success/10 text-success uppercase tracking-wider`}>
+              +{trend}%
+            </span>
+          )}
         </div>
         <div>
-          <div className="text-3xl font-bold text-foreground mb-1 font-heading">{value}</div>
-          <div className="flex items-center gap-1.5 text-sm font-medium">
-            <span className={trend === 'up' ? 'text-success' : 'text-primary'}>
-              {trend === 'up' ? '↑' : '→'} {subtitle}
-            </span>
-          </div>
+          <div className="text-sm font-bold text-muted-foreground/70 uppercase tracking-widest mb-1">{title}</div>
+          <div className="text-4xl font-extrabold text-foreground font-heading tracking-tight">{value}</div>
+          <p className="text-xs text-muted-foreground mt-2 font-medium opacity-60">{subtitle}</p>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="space-y-8 pb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-heading mb-2">
-            Dashboard
+    <div className="space-y-10 pb-10">
+      {/* Welcome Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 p-8 rounded-[2.5rem] border border-primary/10 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold mb-4 uppercase tracking-widest">
+            <Star size={12} className="fill-current" /> Personal Growth
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground font-heading mb-3">
+            Hello, {user?.name?.split(' ')[0] || 'Developer'}!
           </h1>
-          <p className="text-muted-foreground flex items-center gap-2">
-            Here's what's happening with your prep today.
+          <p className="text-muted-foreground text-lg max-w-xl leading-relaxed">
+            You've solved <span className="text-foreground font-bold">12 problems</span> this week. You're in the top <span className="text-primary font-bold">5%</span> of active users.
           </p>
         </div>
-        <button 
-          onClick={() => navigate('/roadmap')}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors shadow-sm font-medium"
-        >
-          <Sparkles size={18} /> Generate Plan
-        </button>
+        <div className="flex flex-wrap gap-3 relative z-10">
+          <button 
+            onClick={() => navigate('/roadmap')}
+            className="flex items-center gap-2 px-6 py-4 bg-primary text-primary-foreground rounded-2xl hover:bg-primary/90 transition-all shadow-glow font-bold group"
+          >
+            <Sparkles size={20} /> <span>New Roadmap</span>
+            <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
       </div>
 
+      {/* Stats Grid */}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard 
-          title="Problems Solved" 
+          title="Problems" 
           value={user?.stats?.problemsSolved || 45} 
-          subtitle="12% from last month" 
+          subtitle="Keep solving to level up" 
           icon={CheckCircle2} 
-          trend="up" 
+          trend="12" 
+          color="primary"
         />
         <StatCard 
-          title="Study Hours" 
+          title="Hours" 
           value={`${user?.stats?.studyHours || 120}h`} 
-          subtitle="5 hours this week" 
+          subtitle="Total focus time" 
           icon={Clock} 
-          trend="up" 
+          trend="8" 
+          color="accent"
         />
         <StatCard 
-          title="Current Streak" 
-          value={`${user?.stats?.streak || 7} Days`} 
-          subtitle="Keep the momentum!" 
+          title="Streak" 
+          value={`${user?.stats?.streak || 7}d`} 
+          subtitle="Best: 14 days" 
           icon={Trophy} 
-          trend="up" 
+          color="warning"
         />
         <StatCard 
-          title="Next Target" 
-          value="Dynamic Prog." 
-          subtitle="Recommended topic" 
+          title="Rank" 
+          value="S-Tier" 
+          subtitle="Based on performance" 
           icon={Target} 
-          trend="neutral" 
+          color="success"
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-7">
-        <div className="lg:col-span-4 rounded-2xl border border-border bg-card shadow-soft p-6 flex flex-col">
-          <div className="flex items-center justify-between mb-8">
+      <div className="grid gap-8 lg:grid-cols-12">
+        {/* Chart Section */}
+        <div className="lg:col-span-8 rounded-[2.5rem] border border-border/50 bg-card shadow-soft p-8 flex flex-col group">
+          <div className="flex items-center justify-between mb-10">
             <div>
-              <h3 className="font-semibold text-lg font-heading">Weekly Activity</h3>
-              <p className="text-sm text-muted-foreground">Your problem solving velocity</p>
+              <h3 className="font-bold text-2xl font-heading tracking-tight">Performance Velocity</h3>
+              <p className="text-sm text-muted-foreground font-medium opacity-70">Daily problem solving activity</p>
             </div>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-primary" /> Solved
-              </div>
-            </div>
+            <select className="bg-secondary/50 border-none rounded-xl px-4 py-2 text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer">
+              <option>Last 7 Days</option>
+              <option>Last 30 Days</option>
+            </select>
           </div>
-          <div className="flex-1 min-h-[300px]">
+          <div className="flex-1 min-h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={activityData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="4 4" stroke="hsl(var(--border))" vertical={false} />
+              <BarChart data={activityData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--primary))" />
+                    <stop offset="100%" stopColor="hsl(var(--primary) / 0.6)" />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="8 8" stroke="hsl(var(--border) / 0.3)" vertical={false} />
                 <XAxis 
                   dataKey="name" 
                   stroke="hsl(var(--muted-foreground))"
                   fontSize={12}
+                  fontWeight={600}
                   tickLine={false}
                   axisLine={false}
-                  dy={10}
+                  dy={15}
                 />
                 <YAxis 
                   stroke="hsl(var(--muted-foreground))"
                   fontSize={12}
+                  fontWeight={600}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `${value}`}
                 />
                 <Tooltip 
-                  cursor={{ fill: 'hsl(var(--muted)/0.5)' }}
+                  cursor={{ fill: 'hsl(var(--primary) / 0.05)', radius: 12 }}
                   contentStyle={{ 
                     backgroundColor: 'hsl(var(--card))', 
                     borderColor: 'hsl(var(--border))', 
-                    color: 'hsl(var(--foreground))',
-                    borderRadius: '0.75rem',
-                    boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.1)'
+                    borderRadius: '1.25rem',
+                    boxShadow: '0 10px 40px -10px rgba(0, 0, 0, 0.1)',
+                    border: '1px solid hsl(var(--border) / 0.5)',
+                    padding: '12px 16px'
                   }} 
+                  itemStyle={{ fontWeight: 700, color: 'hsl(var(--primary))' }}
                 />
-                <Bar dataKey="solved" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                <Bar 
+                  dataKey="solved" 
+                  fill="url(#barGradient)" 
+                  radius={[10, 10, 10, 10]} 
+                  maxBarSize={32} 
+                  animationDuration={1500}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="lg:col-span-3 rounded-2xl border border-border bg-card shadow-soft p-6 flex flex-col">
-          <div className="mb-6">
-            <h3 className="font-semibold text-lg font-heading flex items-center gap-2">
-              <TrendingUp size={20} className="text-primary" /> Recent Achievements
+        {/* Recent Activity */}
+        <div className="lg:col-span-4 rounded-[2.5rem] border border-border/50 bg-card shadow-soft p-8 flex flex-col">
+          <div className="mb-8">
+            <h3 className="font-bold text-2xl font-heading tracking-tight flex items-center gap-3">
+              <TrendingUp size={24} className="text-primary" /> Activity
             </h3>
-            <p className="text-sm text-muted-foreground">You've been on fire lately.</p>
+            <p className="text-sm text-muted-foreground font-medium opacity-70">Your latest achievements.</p>
           </div>
           
-          <div className="space-y-4 flex-1 overflow-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 flex-1">
             {[
-              { title: 'Two Sum', tags: 'Arrays, Hash Table', time: '2 hours ago', difficulty: 'Easy' },
-              { title: 'Longest Substring', tags: 'Sliding Window', time: 'Yesterday', difficulty: 'Medium' },
-              { title: 'Merge K Sorted Lists', tags: 'Heap, Divide & Conquer', time: '2 days ago', difficulty: 'Hard' },
-              { title: 'Valid Parentheses', tags: 'Stack', time: '3 days ago', difficulty: 'Easy' },
-              { title: 'Course Schedule', tags: 'Graph, Topological Sort', time: '3 days ago', difficulty: 'Medium' }
+              { title: 'Two Sum', time: '2h ago', diff: 'Easy' },
+              { title: 'Longest Path', time: '5h ago', diff: 'Hard' },
+              { title: 'Binary Search', time: 'Yesterday', diff: 'Medium' },
+              { title: 'Tree Traversal', time: 'Yesterday', diff: 'Easy' },
             ].map((item, i) => (
-              <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-border/50 bg-background/50 hover:bg-muted/50 transition-colors group">
-                <div className="mb-2 sm:mb-0">
-                  <p className="font-medium text-foreground group-hover:text-primary transition-colors">{item.title}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{item.tags}</p>
+              <div key={i} className="flex items-center justify-between p-4 rounded-2xl border border-border/30 bg-secondary/20 hover:bg-secondary/40 transition-all cursor-pointer group">
+                <div className="flex items-center gap-4">
+                  <div className={`w-2 h-2 rounded-full ${
+                    item.diff === 'Easy' ? 'bg-success' : item.diff === 'Medium' ? 'bg-warning' : 'bg-destructive'
+                  }`} />
+                  <div>
+                    <p className="text-[14px] font-bold text-foreground group-hover:text-primary transition-colors">{item.title}</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">{item.time}</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${
-                    item.difficulty === 'Easy' ? 'bg-success/10 text-success' :
-                    item.difficulty === 'Medium' ? 'bg-warning/10 text-warning' :
-                    'bg-destructive/10 text-destructive'
-                  }`}>
-                    {item.difficulty}
-                  </span>
-                  <span className="text-xs font-medium text-muted-foreground hidden sm:block w-20 text-right">{item.time}</span>
-                </div>
+                <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
               </div>
             ))}
           </div>
-          <button className="w-full mt-4 py-2.5 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors border border-transparent hover:border-primary/20">
-            View All History
+          
+          <button className="w-full mt-6 py-4 text-sm font-bold text-primary bg-primary/5 hover:bg-primary/10 rounded-2xl transition-all border border-primary/10">
+            View Journey
           </button>
         </div>
       </div>
