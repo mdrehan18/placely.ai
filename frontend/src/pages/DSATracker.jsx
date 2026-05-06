@@ -40,7 +40,7 @@ const DSATracker = () => {
 
   const handleStatusChange = async (id, currentStatus) => {
     const newStatus = currentStatus === 'Solved' ? 'Unsolved' : 'Solved';
-    setProblems(problems.map(p => p._id === id ? { ...p, status: newStatus } : p));
+    setProblems((problems || []).map(p => p._id === id ? { ...p, status: newStatus } : p));
     try {
       await api.put(`/dsa/${id}`, { status: newStatus });
     } catch (error) {
@@ -50,7 +50,7 @@ const DSATracker = () => {
   };
 
   const handleDelete = async (id) => {
-    setProblems(problems.filter(p => p._id !== id));
+    setProblems((problems || []).filter(p => p._id !== id));
     try {
       await api.delete(`/dsa/${id}`);
     } catch (error) {
@@ -59,7 +59,7 @@ const DSATracker = () => {
     }
   };
 
-  const filteredProblems = problems.filter(p => {
+  const filteredProblems = (problems || []).filter(p => {
     const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDifficulty = filterDifficulty === 'All' || p.difficulty === filterDifficulty;
     return matchesSearch && matchesDifficulty;
